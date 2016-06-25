@@ -20,7 +20,7 @@ int levelSwitchState = LEVEL_SWITCH_HIGH;   // Debounced levelSwitchState
 #define BUZZER_ON HIGH
 #define BUZZER_OFF LOW
 bool buzzerToggle = false;
-elapsedMillis timerBuzzer; /
+elapsedMillis timerBuzzer;
 bool buzzerSilenced = false;
 
 // Buzzer Silence Button
@@ -53,12 +53,17 @@ void loop() {
     if(tempLevelSwitchState != levelSwitchState) {
         if(timerLeveLSwitchDebounce > debounceTime) {
             levelSwitchState = tempLevelSwitchState;
-            // Do other state transition stuff here like sending an event.
+            
+            // Send out an event for the level switch state change
+            if(levelSwitchState == LEVEL_SWITCH_LOW) {
+                Particle.publish("WATER_LOW");
+            } else {
+                Particle.publish("WATER_NORMAL");
+            }
         }
     } else {
         timerLeveLSwitchDebounce = 0;
     }
-    
     
     // Check state of the debounced level switch. If it's low then try to do a number of things
     // If the buzzer has not been silenced then buzz
@@ -66,6 +71,8 @@ void loop() {
     if (levelSwitchState  == LEVEL_SWITCH_LOW) {
         if(!buzzerSilenced) {
             if(btn1Result == 1) {   
+                if(!buzzerSilenced)
+                    Particle.publish("BUZZER_SILENCED");
                 buzzerSilenced = true;
             } else {
                 // If buzzer is not silenced and the button was not pressed to silence the button
