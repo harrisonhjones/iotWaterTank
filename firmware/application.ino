@@ -2,7 +2,7 @@
 // Author: Harrison Jones
 // Description: Main logic for the IoT Water Tank
 // Change Log
-// JAN 06/24/2016 - Initial Release
+// JUN 24 2016 - Initial Release
 
 #include "clickButton.h"        // https://github.com/pkourany/clickButton/
 #include "elapsedMillis.h"      // https://github.com/pkourany/elapsedMillis
